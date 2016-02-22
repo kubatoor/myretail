@@ -1,5 +1,7 @@
 package com.anirudh.myretail.service;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -8,12 +10,16 @@ import com.anirudh.myretail.model.Currency;
 import com.anirudh.myretail.model.Money;
 import com.anirudh.myretail.model.Product;
 import com.anirudh.myretail.repository.ProductRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 @Service
 public class ProductServiceImpl implements ProductService {
 	
 	@Autowired
 	private ProductRepository productRepository;
+	
+	@Autowired
+	private TargetAPIService targetAPIService;
 
 	@Override
 	public Product getProduct(Long productId) {
@@ -22,7 +28,15 @@ public class ProductServiceImpl implements ProductService {
 		
 		Product product = new Product();
 		product.setId(productId);
-		product.setName("Iphone 678");
+		try {
+			product.setName(targetAPIService.getProductName(productId));
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Money money = new Money(productDTO.getPrice(), Currency.valueOf(productDTO.getCurrency()));
 		product.setPrice(money);
 		return product;
