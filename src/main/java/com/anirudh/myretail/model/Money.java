@@ -2,10 +2,13 @@ package com.anirudh.myretail.model;
 
 import java.math.BigDecimal;
 
+import javax.validation.constraints.Digits;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Money {
 	@JsonProperty("value")
+	@Digits(fraction = 0, integer = 0)
 	private BigDecimal amount;
 	@JsonProperty("currency_code")
 	private Currency currency;

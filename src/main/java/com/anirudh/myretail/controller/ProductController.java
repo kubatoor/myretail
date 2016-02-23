@@ -4,6 +4,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,7 +39,10 @@ public class ProductController {
 	}
 	
 	@RequestMapping(value="/product/{id}",method=RequestMethod.PUT)
-	public ResponseEntity<Product> updateProduct(@PathVariable("id") Long productId, @RequestBody Product product){
+	public ResponseEntity<Product> updateProduct(@PathVariable("id") Long productId, 
+			@RequestBody Product product,
+			BindingResult bindingResult){
+		
 
 		productService.updateProduct(product);
 		return new ResponseEntity<Product>(HttpStatus.OK);
@@ -48,6 +53,14 @@ public class ProductController {
 	public ResponseEntity<String> handleAPIException(){
 		String message = "Internal Server Error";
 		return new ResponseEntity<>(message,HttpStatus.INTERNAL_SERVER_ERROR);
+		
+	}
+	
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<String> handleInvalidRequests(){
+		
+		String message = "Invalid Request";
+		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 		
 	}
 
