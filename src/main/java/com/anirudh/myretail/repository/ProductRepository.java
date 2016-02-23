@@ -16,7 +16,4 @@ public interface ProductRepository extends CassandraRepository<ProductDTO>{
 	@Query("update product set price=?0, currency=?1 where productID=?2" )
 	public ProductDTO update(BigDecimal price, String currency, Long productID );
 	
-	//public ProductDTO updateOrSave(ProductDTO product);
-	//public Product save(Product product);
-
 }

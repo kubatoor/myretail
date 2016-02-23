@@ -1,5 +1,9 @@
 package com.anirudh.myretail.model;
 
+import javax.validation.constraints.Digits;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
@@ -8,6 +12,7 @@ public class Product {
 	
 	private Long id;
 	
+	@NotEmpty
 	private String name;
 	
 	@JsonProperty("current_price")
